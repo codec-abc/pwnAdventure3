@@ -53,7 +53,7 @@ namespace TCPForwarder
             while (true)
             {
                 var source = _mainSocket.Accept();
-                var destination = new TcpForwarderSlim(!this._isClientToServer, null);
+                var destination = new TcpForwarderSlim(!this._isClientToServer, new ServerToClientDataAnalyzer());
                 var state = new State(source, destination._mainSocket);
                 destination.Connect(remote, source);
                 source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
@@ -70,7 +70,7 @@ namespace TCPForwarder
                 0,
                 state.Buffer.Length,
                 SocketFlags.None,
-                (result) => this.OnDataReceive(result),//OnDataReceive, 
+                (result) => this.OnDataReceive(result), 
                 state
             );
         }
@@ -88,29 +88,17 @@ namespace TCPForwarder
                     {
                         bytes[i] = state.Buffer[i];
                     }
-
-                    if (this._analyzer != null)
-                    {
-                        bytes = this._analyzer.Analyze(bytes);
-                    }
-
+                    
                     var now = DateTime.UtcNow;
 
-                    var truc = BitConverter.ToString(bytes);
                     var direction = "" + state.SourceSocket.RemoteEndPoint + "-to-" + state.DestinationSocket.RemoteEndPoint;
                     direction = direction.Replace(':', '_');
                     var time = now.ToString("yyyy-MM-dd-hh-mm-ss-fff");
 
-                    //Console.WriteLine("[" + time + "]" + "gameserver: " + direction);
-                    //Console.WriteLine(truc);
-
-                    //System.IO.File.WriteAllBytes(
-                    //       System.IO.Path.Combine
-                    //       (
-                    //            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                    //            @"retroIngeneering\" + time + direction + ".bin"
-                    //        ),
-                    //       bytes);
+                    if (this._analyzer != null)
+                    {
+                        bytes = this._analyzer.Analyze(bytes, time, direction);
+                    }
 
                     state.DestinationSocket.Send(bytes, bytes.Length, SocketFlags.None);
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
