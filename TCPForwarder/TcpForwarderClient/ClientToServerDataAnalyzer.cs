@@ -87,10 +87,7 @@ namespace TcpForwarderClient
             //_parsers.Add(new LeftClickReader());
             _parsers.Add(new PickupReader());
 
-            System.IO.Directory.CreateDirectory(
-                System.IO.Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                            @"retroIngeneering\clientToServer\"));
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Common.Utils.GetLogDir(), "clientToServer"));
         }
 
         private List<PartReader> _parsers =
@@ -146,8 +143,7 @@ namespace TcpForwarderClient
                     System.IO.File.WriteAllBytes(
                         System.IO.Path.Combine
                         (
-                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                            @"retroIngeneering\clientToServer\" + timeAsString + direction + ".bin"
+                            Common.Utils.GetLogDir(), @"clientToServer\" + timeAsString + direction + ".bin"
                         ),
                         input);
                 }

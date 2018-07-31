@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB96E3DC-395E-4E20-9531-EA1E083DBBC4}</ProjectGuid>
+    <ProjectGuid>{EF148FA8-76C7-446D-BD9A-B4EE27DA696B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TCPForwarder</RootNamespace>
-    <AssemblyName>TCPForwarder</AssemblyName>
+    <RootNamespace>TcpForwarderClient</RootNamespace>
+    <AssemblyName>TcpForwarderClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TcpForwarderSlim.cs" />
+    <Compile Include="ClientToServerDataAnalyzer.cs" />
+    <Compile Include="DataAnalyzer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerToClientDataAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

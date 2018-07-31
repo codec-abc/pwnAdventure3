@@ -30,8 +30,8 @@ namespace TcpForwarderClient
 
             System.IO.Directory.CreateDirectory(
                 System.IO.Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                    @"retroIngeneering\serverToClient\")
+                    Common.Utils.GetLogDir(),
+                    @"serverToClient")
                     );
         }
 
@@ -81,8 +81,7 @@ namespace TcpForwarderClient
                 (
                     System.IO.Path.Combine
                     (
-                        Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                        @"retroIngeneering\serverToClient\" + timeAsString + direction + ".bin"
+                        Common.Utils.GetLogDir(), @"serverToClient\" + timeAsString + direction + ".bin"
                     ),
                     input
                 );

@@ -70,14 +70,10 @@ namespace TCPForwarder
 
                         var now = DateTime.UtcNow;
 
-                        var truc = BitConverter.ToString(bytes);
+                        var data = BitConverter.ToString(bytes);
 
                         Console.WriteLine("state " + state.SourceSocket.RemoteEndPoint + " to " + state.DestinationSocket.RemoteEndPoint);
-                        Console.WriteLine(truc);
-
-                        //System.IO.File.WriteAllBytes(
-                        //       @"C:\Users\Sesa455926\Desktop\retroIngeneering\" + now.ToString("yyyy-MM-dd-hh-mm-ss.bin"),
-                        //       bytes);
+                        Console.WriteLine(data);
 
                         state.DestinationSocket.Send(state.Buffer, bytesRead, SocketFlags.None);
                         state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
