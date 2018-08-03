@@ -12,12 +12,5 @@ namespace TcpForwarderClient
         byte[] Analyze(byte[] input, string timeAsString, string direction);
     }
 
-    public interface PartReader
-    {
-        int GetLength();
-        byte[] GetPrefix();
-
-    }
-
     
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,25 +9,56 @@ namespace TcpForwarderClient
 {
     public class ServerToClientDataAnalyzer : IDataAnalyzer
     {
-        //class MoveReader : PartReader
-        //{
-        //    public int GetLength()
-        //    {
-        //        return 24;
-        //    }
+        interface ServerToClientAnalyzer
+        {
+            int GetLength(byte[] input, int offset);
+            bool IsMatchingPrefix(byte[] input, int offset);
+            void Parse(byte[] input, int offset);
+        }
 
-        //    public byte[] GetPrefix()
-        //    {
-        //        return new byte[] { 0x6D, 0x76 };
-        //    }
-        //}
+        class DummyReader : ServerToClientAnalyzer
+        {
+            public int GetLength(byte[] input, int offset)
+            {
+                return 2;
+            }
 
-        private List<PartReader> _parsers =
-           new List<PartReader>();
+            public bool IsMatchingPrefix(byte[] input, int offset)
+            {
+
+                return input[offset] == 0x00 && input[offset + 1] == 0x00;
+            }
+
+            public void Parse(byte[] input, int offset)
+            {
+            }
+        }
+
+        class ConnexionReader : ServerToClientAnalyzer
+        {
+            public int GetLength(byte[] input, int offset)
+            {
+                return 22;
+            }
+
+            public bool IsMatchingPrefix(byte[] input, int offset)
+            {
+                return input[offset] != 0x00 && input[offset + 1] == 0x00;
+            }
+
+            public void Parse(byte[] input, int offset)
+            {
+            }
+        }
+
+        private int _messageIndex = -1;
+
+        private List<ServerToClientAnalyzer> _parsers =
+           new List<ServerToClientAnalyzer>();
 
         public ServerToClientDataAnalyzer()
         {
-            //_parsers.Add(new MoveReader());
+            _parsers.Add(new DummyReader());
 
             System.IO.Directory.CreateDirectory(
                 System.IO.Path.Combine(
@@ -37,6 +69,34 @@ namespace TcpForwarderClient
 
         public byte[] Analyze(byte[] input, string timeAsString, string direction)
         {
+            _messageIndex++;
+
+            if (_messageIndex == 0)
+            {
+                //54-00-00-00-3B-7B-53-C7-56-7B-5E-C7-EE-A5-88-44-00-00-00-00-00-00
+
+                //var x = BitConverter.ToSingle(input, 0 + 2);
+                //var y = BitConverter.ToSingle(input, 4 + 2);
+                //var z = BitConverter.ToSingle(input, 8 + 2);
+
+                var returned = new byte[input.Length];
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    returned[i] = input[i];
+                }
+
+                var x = BitConverter.GetBytes(-2778.0f);
+                var y = BitConverter.GetBytes(-11035.0f);
+                var z = BitConverter.GetBytes(10504.0f + 100.0f);
+
+                Array.Copy(x, 0, returned, 0 + 4, 4);
+                Array.Copy(y, 0, returned, 4 + 4, 4);
+                Array.Copy(z, 0, returned, 8 + 4, 4);
+
+                return returned;
+            }
+
             var index = 0;
             var canParse = true;
 
@@ -50,10 +110,9 @@ namespace TcpForwarderClient
                     (
                         parser =>
                         {
-                            var bytes = parser.GetPrefix();
-                            if (bytes[0] == byte0 && bytes[1] == byte1)
+                            if (parser.IsMatchingPrefix(input, index))
                             {
-                                return new int?(parser.GetLength());
+                                return new int?(parser.GetLength(input, index));
                             }
                             else
                             {
@@ -70,7 +129,8 @@ namespace TcpForwarderClient
                 else
                 {
                     canParse = false;
-                    //Console.WriteLine("cannot parse " + BitConverter.ToString(new byte[] { byte0 }) + " " + BitConverter.ToString(new byte[] { byte1 }));
+                    //Console.WriteLine("Server To Client cannot parse " + BitConverter.ToString(new byte[] { byte0 }) + " " + BitConverter.ToString(new byte[] { byte1 }));
+                    //Console.WriteLine(Utils.GetCurrentDate() + " ServerToClient: cannot parse =>" + BitConverter.ToString(input));
                 }
             }
 
@@ -81,7 +141,7 @@ namespace TcpForwarderClient
                 (
                     System.IO.Path.Combine
                     (
-                        Common.Utils.GetLogDir(), @"serverToClient\" + timeAsString + direction + ".bin"
+                        Utils.GetLogDir(), @"serverToClient\" + timeAsString + direction + ".bin"
                     ),
                     input
                 );

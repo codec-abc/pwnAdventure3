@@ -14,5 +14,11 @@ namespace Common
                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                            @"retroIngeneering");
         }
+
+        public static string GetTimeStamp()
+        {
+            var now = DateTime.Now;
+            return now.ToString("yyyy-MM-dd--HH-mm-ss-fff");
+        }
     }
 }

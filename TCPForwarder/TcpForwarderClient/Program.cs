@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCPForwarder
 {
+    using Common;
     using System;
     using System.Net;
     using System.Net.Sockets;
@@ -93,12 +94,13 @@ namespace TCPForwarder
 
                     var direction = "" + state.SourceSocket.RemoteEndPoint + "-to-" + state.DestinationSocket.RemoteEndPoint;
                     direction = direction.Replace(':', '_');
-                    var time = now.ToString("yyyy-MM-dd-hh-mm-ss-fff");
+                    var time = Utils.GetTimeStamp();
 
                     if (this._analyzer != null)
                     {
                         bytes = this._analyzer.Analyze(bytes, time, direction);
                     }
+
 
                     state.DestinationSocket.Send(bytes, bytes.Length, SocketFlags.None);
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
