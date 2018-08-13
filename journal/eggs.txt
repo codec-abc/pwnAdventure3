@@ -1,10 +1,16 @@
--250445 18085 260
--51570 -61215 5020
-24512 69682 2659
-60453 -17409 2939
-1522 14966 7022
-11604 -13131 411
--72667 -53567 1645
-48404 28117 704
-65225 -5740 4928
--2778 -11035 10504
+egg positions:
+
+-25044f, 18085f, 260f
+-51570f, -61215f, 5020f
+24512f, 69682f, 2659f
+60453f, -17409f, 2939f
+1522f, 14966f, 7022f
+11604f, -13131f, 411f
+-72667f, -53567f, 1645f
+48404f, 28117f, 704f
+65225f, -5740f, 4928f
+-2778f, -11035f, 10504f
+
+
+9 first eggs can be picked easily.
+Last one is trickier to pick. You need to grab the cowboy coder gun (can be found on bears or buy to the guns seller) and shoot the poster in the ballmer peak poster, which will make the last egg pickable.
