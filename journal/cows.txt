@@ -1,0 +1,10 @@
+to get the cow flag:
+
+talk to the guy in the gold farm
+
+go on foot at positions (speed hack is nice for that, also dump positions send to server to find the island)
+252920 -245380 1170
+
+talk to the guy, get the device, use it on the cow king to steal its power then kill it and loot the chest.
+
+
