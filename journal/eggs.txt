@@ -1,5 +1,8 @@
 egg positions:
 
+The easy way to get it is to intercept the server message when logging in,
+Changing the coordinates send by the server by those ones, picking the egg, logging out and doing this again for all (except the last) egg.
+
 -25044f, 18085f, 260f
 -51570f, -61215f, 5020f
 24512f, 69682f, 2659f
